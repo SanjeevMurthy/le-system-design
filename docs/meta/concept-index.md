@@ -153,6 +153,8 @@ Each concept appears ONCE, mapped to its canonical file in the knowledge base. T
 | Web crawler | case-studies/web-crawler.md | URL frontier, BFS crawling, politeness (robots.txt, domain rate limiting), Bloom filter for deduplication, DNS resolution, SQS with visibility timeouts and DLQ, bandwidth estimation | probabilistic-data-structures, message-queues, back-of-envelope-estimation |
 | Ad click aggregator | case-studies/ad-click-aggregator.md | Click event aggregation, hybrid stream/batch (Lambda/Kappa), Flink windowed aggregation, Spark reconciliation, logarithmic counting (2^n write reduction), real-time analytics | event-driven-architecture, message-queues, probabilistic-data-structures |
 | News feed | case-studies/news-feed.md | Feed generation, hybrid fan-out (pre-computed flag), feed ranking, merge at read time, timeline caching, social graph traversal | fan-out, caching, redis, message-queues |
+| Uber | case-studies/uber.md | Ride-sharing at scale, real-time location tracking (H3/S2 hexagonal cells), matching/dispatch system, surge pricing (supply/demand feedback loop), ETA calculation (ML + graph), trip state machine, payment processing (saga pattern) | geospatial-indexing, redis, message-queues, event-driven-architecture, cassandra, sql-databases, distributed-transactions, real-time-protocols |
+| Google Maps | case-studies/google-maps.md | Mapping at scale, map tile rendering (pre-rendered PNG/vector tiles via CDN), route planning (A* on hierarchical routing tiles), real-time traffic (probe data aggregation), ETA prediction (graph + ML), geocoding, adaptive rerouting | geospatial-indexing, cdn, object-storage, message-queues, event-driven-architecture, cassandra, redis, time-series-databases |
 
 ---
 

@@ -2,7 +2,7 @@
 
 A comprehensive, concept-driven system design reference built from multiple authoritative sources. Every topic exists in exactly one canonical file — no duplication, full cross-linking.
 
-**57 canonical topic files | 10 case studies | 153 glossary terms**
+**62 canonical topic files | 14 case studies | 153 glossary terms | [Cheat Sheet](cheat-sheet.md)**
 
 ---
 
@@ -13,7 +13,8 @@ A comprehensive, concept-driven system design reference built from multiple auth
 Start here to build the mental framework for all system design work.
 
 1. [System Design Framework](fundamentals/system-design-framework.md) — requirements, estimation, interview methodology
-2. [Scaling Overview](fundamentals/scaling-overview.md) — vertical vs horizontal, when to scale what
+2. [Data Modeling](fundamentals/data-modeling.md) — schema design, normalization vs denormalization, polyglot persistence
+3. [Scaling Overview](fundamentals/scaling-overview.md) — vertical vs horizontal, when to scale what
 3. [Availability & Reliability](fundamentals/availability-reliability.md) — nines, fault tolerance, redundancy
 4. [CAP Theorem](fundamentals/cap-theorem.md) — CAP, PACELC, consistency models
 5. [Networking Fundamentals](fundamentals/networking-fundamentals.md) — DNS, TCP/UDP, OSI, proxies
@@ -111,11 +112,16 @@ Real-world system designs that tie everything together. Study these after master
 | [Web Crawler](case-studies/web-crawler.md) | URL frontier, SQS, politeness | Hard |
 | [Ad Click Aggregator](case-studies/ad-click-aggregator.md) | Lambda/Kappa, Flink, logarithmic counting | Hard |
 | [UPI Payments](case-studies/upi-payments.md) | NPCI closed-loop, transaction integrity | Hard |
+| [Instagram](case-studies/instagram.md) | Image pipeline, feed ranking, Stories | Medium |
+| [Netflix](case-studies/netflix.md) | Transcoding, ABR streaming, Open Connect CDN | Hard |
+| [Uber](case-studies/uber.md) | Geospatial matching, surge pricing, ETA | Hard |
+| [Google Maps](case-studies/google-maps.md) | Tile serving, route planning, real-time traffic | Hard |
 
 ---
 
 ## Quick Reference
 
+- [Cheat Sheet](cheat-sheet.md) — interview framework, decision matrices, key numbers
 - [Glossary](glossary.md) — 153 system design terms defined
 - [Concept Index](meta/concept-index.md) — master deduplicated concept list
 - [Source Inventory](meta/source-inventory.md) — catalog of all source materials
