@@ -2,7 +2,7 @@
 
 A comprehensive, concept-driven system design reference built from multiple authoritative sources. Every topic exists in exactly one canonical file — no duplication, full cross-linking.
 
-**62 canonical topic files | 14 case studies | 153 glossary terms | [Cheat Sheet](cheat-sheet.md)**
+**62 canonical topic files | 58 GenAI topic files | 14 case studies | 153 glossary terms | [Cheat Sheet](cheat-sheet.md)**
 
 ---
 
@@ -116,6 +116,12 @@ Real-world system designs that tie everything together. Study these after master
 | [Netflix](case-studies/netflix.md) | Transcoding, ABR streaming, Open Connect CDN | Hard |
 | [Uber](case-studies/uber.md) | Geospatial matching, surge pricing, ETA | Hard |
 | [Google Maps](case-studies/google-maps.md) | Tile serving, route planning, real-time traffic | Hard |
+
+### Stage 7: Generative AI System Design
+
+A complete knowledge base for GenAI system design — from transformer foundations through production patterns.
+
+**[→ GenAI System Design Knowledge Base](genai/index.md)** — 58 topic files covering LLM architecture, RAG, agents, evaluation, safety, and production patterns.
 
 ---
 

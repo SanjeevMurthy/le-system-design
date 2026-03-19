@@ -158,6 +158,24 @@ Each concept appears ONCE, mapped to its canonical file in the knowledge base. T
 
 ---
 
+## Generative AI (GenAI Namespace)
+
+GenAI concepts live under `docs/genai/` with their own concept index at `genai/meta/genai-concept-index.md`. The following GenAI concepts extend topics that also exist in the traditional system design knowledge base:
+
+| GenAI Concept | GenAI Canonical File | Related Traditional File | Relationship |
+|---|---|---|---|
+| Vector databases | genai/vector-search/vector-databases.md | patterns/recommendation-engines.md | Expands vector search section |
+| Semantic caching | genai/performance/semantic-caching.md | caching/caching.md | GenAI-specific caching pattern |
+| LLM observability | genai/evaluation/llm-observability.md | observability/monitoring.md | LLM-specific tracing |
+| GenAI gateway | genai/case-studies/genai-gateway.md | architecture/api-gateway.md | LLM multi-provider routing |
+| Streaming (LLM) | genai/performance/latency-optimization.md | api-design/real-time-protocols.md | LLM streaming specifics |
+| GPU scheduling (K8s) | genai/case-studies/kubernetes-genai.md | scalability/autoscaling.md | GPU-specific autoscaling |
+| Model deployment | genai/patterns/deployment-patterns.md | resilience/feature-flags.md | Model-specific canary/A-B |
+| LLM rate limiting | genai/performance/cost-optimization.md | resilience/rate-limiting.md | LLM API quota management |
+| LLM circuit breaker | genai/patterns/genai-design-patterns.md | resilience/circuit-breaker.md | LLM-specific retry/fallback |
+
+---
+
 ## Source Coverage Matrix
 
 The following table maps each source to the primary concepts it contributes to the knowledge base.
