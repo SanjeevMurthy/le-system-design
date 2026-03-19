@@ -25,11 +25,17 @@ Transform raw learning materials in `/source` (4 PDF books, 1 PDF notes, 9 YouTu
 | System Design - Grokking | Notes PDF | 80 | Classic interview designs: URL shortener, Instagram, Dropbox, Twitter, YouTube, Uber |
 | YouTube Video Reports 1-9 | Markdown | ~1300 lines | Distributed systems fundamentals, case studies (Twitter, Ticketmaster, Tinder, UPI), Redis, Kafka, caching, sharding, Cassandra, recommendation engines, video streaming |
 
+**Non-source files (must be excluded from content extraction):**
+- `/initialize.md` — project brief/instructions, not source material
+- `/x-prompts.txt` — prompt notes, not source material
+
 ## Architecture
 
 ### Phase 0: PDF Extraction (Python Script)
 
 **Script:** `/scripts/extract_pdfs.py`
+
+**Dependencies:** PyMuPDF >= 1.23.0 (required for `page.find_tables()` API)
 
 Build a Python script using PyMuPDF (fitz) that:
 - Reads each PDF, detects chapter/section boundaries from TOC metadata + heading heuristics
@@ -69,71 +75,114 @@ Build a Python script using PyMuPDF (fitz) that:
 (Cleaned extracted text, preserving section structure)
 
 ## Examples & Scenarios
-(Extracted real-world examples, case studies, math)
+(Extracted real-world examples, case studies, math — only if detected)
 
 ## Tables & Comparisons
-(Reconstructed comparison tables)
+(Reconstructed comparison tables — only if tables detected, omit section otherwise)
 
 ## Key Takeaways
-(Final summaries, pro tips, tradeoff callouts found in text)
+(Final summaries, pro tips, tradeoff callouts found in text — only if detected)
 ```
 
 **Heuristics:**
 - TOC bookmarks -> chapter boundaries (available for 4 of 5 PDFs)
-- ALL CAPS or larger font lines -> section headers (fallback for Grokking)
-- Lines containing "example", "case study", "scenario", "consider" -> tagged as examples
-- Comparison patterns (vs., pros/cons, tradeoff) -> tagged as comparisons
+- Font size analysis for Grokking PDF: compute median body font size, then flag lines with font size >= 1.3x median as section headers. Additionally detect ALL CAPS lines of length > 10 characters as headers.
+- Example tagging: lines starting with "Example:", "Case Study:", "Scenario:", or containing "for example," / "for instance," / "e.g.," -> tagged as examples. Avoid false positives from generic words like "consider" used in normal prose.
+- Comparison patterns: lines containing " vs ", "pros and cons", "tradeoff", "trade-off", "comparison" near section headers -> tagged as comparisons
 - Bullet/numbered lists -> preserved structure
-- Table detection via column-aligned text patterns
+- Table detection: use `page.find_tables()` (PyMuPDF >= 1.23) as primary strategy. Fallback to column-alignment heuristics only if the API finds no tables on a page that visually contains tabular data.
+
+**Validation gate (Phase 0 -> Phase 1):**
+After extraction completes, the script runs a self-validation step:
+1. Verify each expected chapter file exists and is non-empty (> 100 characters)
+2. Print a summary: book name, chapters extracted, total files, any failures
+3. If any book fails completely, log the error and continue with remaining books
+4. Output a manifest file `/source/extracted/manifest.json` listing all generated files, their status, and any failures
+
+Phase 1 may launch if the manifest confirms at least 4 of 5 books extracted successfully (since YouTube markdown reports provide fallback coverage). If 2+ books fail, halt and require manual intervention. The manifest must clearly flag which books are missing so Phase 1 agents can note coverage gaps.
 
 ### Phase 1: Source Analysis (3 parallel agents)
 
-Run after extraction completes. Three agents work simultaneously:
+Run after Phase 0 extraction completes and manifest is validated.
+
+**Input scope for ALL Phase 1 agents:**
+- YouTube markdown reports: `/source/youtube-video-reports/1.md` through `9.md` (read directly, no extraction needed)
+- Extracted PDF chapters: `/source/extracted/**/*.md`
+- Agents must NOT read `/initialize.md` or `/x-prompts.txt` as source material
 
 **Agent 1:** `/docs/meta/source-inventory.md`
-- Catalogs all 14 original sources + extracted PDF chapters
+- Catalogs all sources: 9 YouTube reports + all extracted PDF chapters
 - For each: type, scope, concepts covered
 
 **Agent 2:** `/docs/meta/concept-index.md`
 - Master deduplicated concept list from all sources
 - Grouped into domains with aliases and cross-references
 - Each concept is UNIQUE
+- Must define explicit content boundaries for overlapping topics (see Content Boundaries section below)
 
 **Agent 3:** `/docs/meta/source-map.md` + `/docs/glossary.md`
 - Topic -> source file traceability mapping
 - Glossary of all key terms with concise definitions
 
+**Phase 1 -> Phase 2 gate:** ALL three agents must complete before Phase 2 starts. Specifically, `concept-index.md` must be finalized and reviewed because it defines the canonical concept boundaries that Phase 2 agents must respect.
+
 ### Phase 2: Documentation Generation (3 parallel agents, 2 batches)
 
 **Batch 1:**
 
-| Agent | Folders | Files (~) |
-|-------|---------|-----------|
-| Agent 1 | fundamentals/ + scalability/ | 10 |
-| Agent 2 | storage/ + caching/ | 11 |
-| Agent 3 | messaging/ + architecture/ + reliability/ | 10 |
+| Agent | Folders | Specific Files |
+|-------|---------|----------------|
+| Agent 1 | fundamentals/ + scalability/ | system-design-framework, scaling-overview, availability-reliability, cap-theorem, networking-fundamentals, back-of-envelope-estimation, load-balancing, autoscaling, consistent-hashing, sharding (10 files) |
+| Agent 2 | storage/ + caching/ | sql-databases, nosql-databases, object-storage, database-indexing, database-replication, time-series-databases, cassandra, dynamodb, caching, redis, cdn (11 files) |
+| Agent 3 | messaging/ + architecture/ + resilience/ | message-queues, event-driven-architecture, event-sourcing, cqrs, api-gateway, microservices, serverless, rate-limiting, circuit-breaker, distributed-transactions, feature-flags (11 files) |
 
 **Batch 2:**
 
-| Agent | Folders | Files (~) |
-|-------|---------|-----------|
-| Agent 1 | security/ + observability/ + api-design/ (partial) | 7 |
-| Agent 2 | api-design/ (partial) + patterns/ | 6 |
-| Agent 3 | case-studies/ | 10 |
+| Agent | Folders | Specific Files |
+|-------|---------|----------------|
+| Agent 1 | security/ + observability/ + api-design/ (partial) | authentication-authorization, encryption, api-security, monitoring, logging, rest-api, grpc (7 files) |
+| Agent 2 | api-design/ (partial) + patterns/ | graphql, real-time-protocols, fan-out, probabilistic-data-structures, recommendation-engines, video-streaming, search-and-indexing, geospatial-indexing (8 files) |
+| Agent 3 | case-studies/ | twitter, ticketmaster, tinder, upi-payments, facebook-live-comments, whatsapp, dropbox, web-crawler, ad-click-aggregator, news-feed (10 files) |
 
 **Agent rules:**
-- Each agent receives: the 12-section template, its assigned topic list, paths to ALL source files
+- Each agent receives: the 12-section template, its assigned topic list with explicit file names, paths to ALL source files, and the finalized `concept-index.md` with content boundaries
 - Each agent produces: complete canonical `.md` files with Mermaid diagrams, cross-links, source traceability
 - No agent writes to another agent's files
-- Cross-links use relative paths (e.g., `../caching/redis.md`)
+- Cross-links use relative paths (e.g., `../caching/redis.md`) and may reference files being generated by other agents in the same batch — these are written speculatively as relative paths and verified in Phase 3
+- Case study files in `case-studies/` must NOT re-explain concepts that have canonical files. Instead, they cross-link to the canonical file and focus on the specific application of the concept within the case study context.
+
+**Agent failure handling:** If an agent fails mid-execution, its already-written files remain. The failed agent can be re-run with only the remaining unwritten files as its assignment. Other agents' work is unaffected since there is no shared file ownership.
 
 ### Phase 3: Finalization (main thread)
 
 - Build `/docs/index.md` with learning path, topic categories, study order
-- Cross-link verification pass
+- **Cross-link verification:** Run a script that scans all `.md` files in `/docs/`, extracts relative links, and verifies each target file exists. Report broken links for manual fix.
+- **Deduplication audit:** Grep for key concept terms (e.g., "fan-out on write", "two-phase commit", "saga pattern") across all files. Flag any file that contains >3 sentences explaining a concept owned by a different canonical file.
+- **Mermaid syntax check:** Validate all mermaid code blocks parse correctly (basic regex + structure check)
 - Quality check against all acceptance criteria
 
-## Concept Taxonomy (45 canonical topic files)
+## Content Boundaries (Deduplication Rules)
+
+These rules define which file owns which concept to prevent duplication:
+
+| Concept | Canonical File | Other files may only... |
+|---------|---------------|------------------------|
+| Fan-out (read vs write, hybrid) | `patterns/fan-out.md` | Cross-link and state which variant is used |
+| Saga pattern | `resilience/distributed-transactions.md` | Cross-link only |
+| Two-phase commit (2PC) | `resilience/distributed-transactions.md` | Cross-link only |
+| Event sourcing (append-only logs, hydration) | `messaging/event-sourcing.md` | Cross-link only |
+| CQRS (read/write separation) | `messaging/cqrs.md` | Cross-link only |
+| Caching strategies (TTL, cache-aside, write-through/back/around, stampede, invalidation) | `caching/caching.md` | Cross-link only |
+| Redis internals (data structures, pub/sub, persistence, streams, geo) | `caching/redis.md` | Cross-link only |
+| Inverted index / full-text search / Elasticsearch | `patterns/search-and-indexing.md` | Cross-link only |
+| Geospatial (geohashing, quadtrees, R-trees) | `patterns/geospatial-indexing.md` | Cross-link only |
+| Batch/stream processing (Lambda/Kappa, Flink, Spark) | `messaging/event-driven-architecture.md` (section within) | Cross-link only |
+| WAL and CDC | `storage/database-replication.md` (section within) | Cross-link only |
+| Service discovery (ZooKeeper, etcd) | `architecture/microservices.md` (section within) | Cross-link only |
+| Networking (DNS, TCP/UDP, OSI, IP) | `fundamentals/networking-fundamentals.md` | `api-design/` files cover application-layer protocol design only |
+| Scalability overview (vertical vs horizontal, scaling philosophy) | `fundamentals/scaling-overview.md` | `scalability/` folder files cover specific mechanisms |
+
+## Concept Taxonomy (57 canonical topic files)
 
 ```
 /docs/
@@ -141,88 +190,103 @@ Run after extraction completes. Three agents work simultaneously:
   glossary.md
 
   fundamentals/
-    system-design-framework.md
-    scalability.md
-    reliability-availability.md
-    cap-theorem.md
-    networking-fundamentals.md
-    back-of-envelope-estimation.md
+    system-design-framework.md        # requirements, estimation, interview methodology
+    scaling-overview.md               # vertical vs horizontal, scaling philosophy
+    availability-reliability.md       # nines, fault tolerance, redundancy, blast radius
+    cap-theorem.md                    # CAP, PACELC, consistency models
+    networking-fundamentals.md        # DNS, TCP/UDP, OSI model, subnets, NAT
+    back-of-envelope-estimation.md    # QPS, storage, bandwidth math
 
   scalability/
-    load-balancing.md
-    horizontal-scaling.md
-    consistent-hashing.md
-    sharding.md
+    load-balancing.md                 # L4/L7, algorithms, reverse proxy
+    autoscaling.md                    # HPA, Kubernetes scaling, traffic patterns
+    consistent-hashing.md             # hash rings, virtual nodes
+    sharding.md                       # strategies, shard keys, cross-shard txns
 
   storage/
-    sql-databases.md
-    nosql-databases.md
-    object-storage.md
-    database-indexing.md
-    database-replication.md
-    time-series-databases.md
-    cassandra.md
-    dynamodb.md
+    sql-databases.md                  # relational model, ACID, Postgres internals
+    nosql-databases.md                # document, KV, wide-column, graph
+    object-storage.md                 # S3, blob, pre-signed URLs, multipart
+    database-indexing.md              # B-trees, LSM trees, hash indexes
+    database-replication.md           # leader/follower, multi-leader, quorum, WAL, CDC
+    time-series-databases.md          # LSM, compression, downsampling
+    cassandra.md                      # architecture, tunable consistency, write path
+    dynamodb.md                       # partition/sort keys, GSI/LSI, DAX, streams
 
   caching/
-    caching.md
-    redis.md
-    cdn.md
+    caching.md                        # strategies, patterns, pitfalls (NOT Redis-specific)
+    redis.md                          # Redis-specific: data structures, pub/sub, persistence
+    cdn.md                            # edge caching, invalidation, static delivery
 
   messaging/
-    message-queues.md
-    event-driven-architecture.md
-    event-sourcing-cqrs.md
+    message-queues.md                 # Kafka, SQS, consumer groups, DLQ, backpressure
+    event-driven-architecture.md      # pub/sub, choreography vs orchestration, batch/stream
+    event-sourcing.md                 # append-only logs, hydration, audit trail
+    cqrs.md                           # read/write separation, materialized views
 
   architecture/
-    api-gateway.md
-    microservices.md
-    serverless.md
+    api-gateway.md                    # routing, auth, rate limiting, complexity budget
+    microservices.md                  # decomposition, monolith-first, service discovery
+    serverless.md                     # Lambda, vendor lock-in, FaaS patterns
 
-  reliability/
-    rate-limiting.md
-    circuit-breaker.md
-    distributed-transactions.md
-    feature-flags.md
+  resilience/
+    rate-limiting.md                  # fixed window, token bucket, sliding window
+    circuit-breaker.md                # states, exponential backoff, jitter, thundering herd
+    distributed-transactions.md       # 2PC, saga, compensating actions
+    feature-flags.md                  # progressive releases, canary, kill switches
 
   security/
-    authentication-authorization.md
-    encryption.md
-    api-security.md
+    authentication-authorization.md   # OAuth, JWT, RBAC, session management
+    encryption.md                     # at rest, in transit, TLS
+    api-security.md                   # input validation, DDoS protection, least privilege
 
   observability/
-    monitoring.md
-    logging.md
+    monitoring.md                     # Prometheus, Grafana, golden signals, P99
+    logging.md                        # ELK stack, structured logging, tracing
 
   api-design/
-    rest-api.md
-    grpc.md
-    graphql.md
-    real-time-protocols.md
+    rest-api.md                       # resource naming, methods, idempotency, status codes
+    grpc.md                           # protobufs, binary serialization, streaming
+    graphql.md                        # queries, mutations, N+1, data loaders
+    real-time-protocols.md            # WebSockets, SSE, long polling, WebRTC, SFU
 
   patterns/
-    fan-out.md
-    probabilistic-data-structures.md
-    recommendation-engines.md
-    video-streaming.md
+    fan-out.md                        # read vs write, hybrid, celebrity problem
+    probabilistic-data-structures.md  # bloom filters, count-min sketch, HyperLogLog
+    recommendation-engines.md         # candidate gen, ranking, vector search, HNSW
+    video-streaming.md                # adaptive bitrate, HLS/DASH, chunking, transcoding
+    search-and-indexing.md            # inverted index, Elasticsearch, full-text search
+    geospatial-indexing.md            # geohashing, quadtrees, R-trees, proximity
 
   case-studies/
-    twitter.md
-    ticketmaster.md
-    tinder.md
-    upi-payments.md
-    facebook-live-comments.md
-    whatsapp.md
-    dropbox.md
-    web-crawler.md
-    ad-click-aggregator.md
-    news-feed.md
+    twitter.md                        # hybrid fan-out, timeline, search
+    ticketmaster.md                   # two-phase booking, distributed locks, waiting room
+    tinder.md                         # geospatial, atomic swiping, bloom filters
+    upi-payments.md                   # NPCI, PSP model, transaction integrity
+    facebook-live-comments.md         # SSE, partitioned pub/sub, connection mapping
+    whatsapp.md                       # WebSockets, inbox pattern, at-least-once delivery
+    dropbox.md                        # chunking, delta sync, pre-signed URLs
+    web-crawler.md                    # frontier, politeness, SQS, bandwidth math
+    ad-click-aggregator.md            # Kappa/Lambda, Flink, logarithmic counting
+    news-feed.md                      # hybrid fan-out, ranking, pre-computation
 
   meta/
     source-inventory.md
     concept-index.md
     source-map.md
 ```
+
+**Changes from original taxonomy:**
+- Renamed `fundamentals/scalability.md` -> `fundamentals/scaling-overview.md` to avoid collision with `scalability/` folder
+- Renamed `fundamentals/reliability-availability.md` -> `fundamentals/availability-reliability.md` to avoid shadowing `resilience/` folder
+- Renamed `reliability/` folder -> `resilience/` to eliminate name collision with the fundamentals file
+- Split `event-sourcing-cqrs.md` into `event-sourcing.md` and `cqrs.md` (separable patterns)
+- Added `patterns/search-and-indexing.md` (heavily covered across sources, critical for interviews)
+- Added `patterns/geospatial-indexing.md` (covered by Alex Xu Vol 2 Ch 1, Acing, and YouTube reports)
+- Renamed `horizontal-scaling.md` -> `autoscaling.md` (broader scope: HPA, traffic patterns, K8s scaling)
+- Batch/stream processing covered as section within `event-driven-architecture.md`
+- Service discovery covered as section within `microservices.md`
+- WAL/CDC covered as section within `database-replication.md`
 
 ## Topic File Template
 
@@ -270,17 +334,17 @@ List source files used.
 
 ## Acceptance Criteria
 
-- [ ] No duplicate concepts across files
-- [ ] All major system design topics covered (~45 canonical files)
+- [ ] No duplicate concepts across files (verified by deduplication audit grep in Phase 3)
+- [ ] All major system design topics covered (~57 canonical files)
 - [ ] Every topic follows the 12-section template
-- [ ] Mermaid diagrams present where applicable
+- [ ] Mermaid diagrams present where applicable and syntax-valid
 - [ ] `/docs/index.md` exists with learning path and navigation
 - [ ] `/docs/meta/source-inventory.md` exists
 - [ ] `/docs/meta/concept-index.md` exists
 - [ ] `/docs/meta/source-map.md` exists
 - [ ] `/docs/glossary.md` exists
-- [ ] Cross-links between related topics
+- [ ] Cross-links between related topics (all relative links resolve to existing files)
 - [ ] No raw summaries of individual source files
 - [ ] Content is technically deep, not superficial
 - [ ] Each topic combines multiple source explanations into one superior explanation
-- [ ] Documentation navigable on GitHub
+- [ ] Documentation navigable on GitHub (relative links, each folder has content, index at `/docs/`)
