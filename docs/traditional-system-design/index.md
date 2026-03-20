@@ -2,7 +2,7 @@
 
 A comprehensive, concept-driven system design reference built from multiple authoritative sources. Every topic exists in exactly one canonical file — no duplication, full cross-linking.
 
-**62 canonical topic files | 58 GenAI topic files | 14 case studies | 153 glossary terms | [Cheat Sheet](../cheat-sheet.md)**
+**62 canonical topic files | 58 GenAI topic files | 64 K8s topic files | 14 case studies | 153 glossary terms | [Cheat Sheet](../cheat-sheet.md)**
 
 ---
 
@@ -122,6 +122,12 @@ Real-world system designs that tie everything together. Study these after master
 A complete knowledge base for GenAI system design — from transformer foundations through production patterns.
 
 **[→ GenAI System Design Knowledge Base](../genai-system-design/index.md)** — 58 topic files covering LLM architecture, RAG, agents, evaluation, safety, and production patterns.
+
+### Stage 8: Kubernetes System Design
+
+A complete knowledge base for Kubernetes system design — from cluster architecture through production operations.
+
+**[→ Kubernetes System Design Knowledge Base](../kubernetes-system-design/index.md)** — 64 topic files covering cluster design, workload patterns, networking, scaling, security, deployment, observability, platform engineering, and operations.
 
 ---
 
