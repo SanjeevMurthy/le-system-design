@@ -1,7 +1,8 @@
 # OS files
 .DS_Store
 
-# Source folder
+# Source folder - ignore PDFs (large/copyrighted)
+*.pdf
 
 # Prompt files
 *prompt*.txt
