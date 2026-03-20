@@ -6,13 +6,13 @@ A comprehensive, concept-driven knowledge base covering both **traditional syste
 
 ## What's Inside
 
-### Traditional System Design (`docs/`)
+### Traditional System Design (`docs/traditional-system-design/`)
 
 **62 canonical topic files | 14 case studies | 246 glossary terms**
 
 Covers the full stack of distributed systems: scalability, storage, caching, messaging, architecture, resilience, security, observability, API design, and advanced patterns.
 
-**[→ Browse Traditional System Design](docs/index.md)**
+**[→ Browse Traditional System Design](docs/traditional-system-design/index.md)**
 
 | Category | Topics |
 |----------|--------|
@@ -24,13 +24,13 @@ Covers the full stack of distributed systems: scalability, storage, caching, mes
 | **Resilience** | Rate limiting, circuit breaker, distributed transactions, feature flags |
 | **Case Studies** | Twitter, Netflix, Uber, WhatsApp, Dropbox, Instagram, Google Maps, and more |
 
-### Generative AI System Design (`docs/genai/`)
+### Generative AI System Design (`docs/genai-system-design/`)
 
 **58 canonical topic files | 6 case studies | 11 design patterns | 157 indexed concepts**
 
 Covers the full GenAI system lifecycle: LLM foundations, inference infrastructure, RAG, agents, evaluation, safety, performance optimization, and production patterns.
 
-**[→ Browse GenAI System Design](docs/genai/index.md)**
+**[→ Browse GenAI System Design](docs/genai-system-design/index.md)**
 
 | Category | Topics |
 |----------|--------|
@@ -52,17 +52,17 @@ Covers the full GenAI system lifecycle: LLM foundations, inference infrastructur
 ## Learning Path
 
 ### For Traditional System Design
-Start with [Foundations](docs/fundamentals/system-design-framework.md) → Building Blocks → Communication → Reliability → Case Studies
+Start with [Foundations](docs/traditional-system-design/01-fundamentals/system-design-framework.md) → Building Blocks → Communication → Reliability → Case Studies
 
 ### For GenAI System Design
-Start with [Foundations](docs/genai/foundations/transformers.md) → LLM Architecture → RAG → Agents → Production Readiness → Case Studies
+Start with [Foundations](docs/genai-system-design/01-foundations/transformers.md) → LLM Architecture → RAG → Agents → Production Readiness → Case Studies
 
 ---
 
 ## Quick Reference
 
-- [Traditional System Design Index](docs/index.md)
-- [GenAI System Design Index](docs/genai/index.md)
+- [Traditional System Design Index](docs/traditional-system-design/index.md)
+- [GenAI System Design Index](docs/genai-system-design/index.md)
 - [Glossary (246 terms)](docs/glossary.md)
 - [Cheat Sheet](docs/cheat-sheet.md)
 
@@ -72,27 +72,35 @@ Start with [Foundations](docs/genai/foundations/transformers.md) → LLM Archite
 
 ```
 docs/
-├── fundamentals/       # System design foundations
-├── scalability/        # Load balancing, sharding, autoscaling
-├── storage/            # SQL, NoSQL, object storage, indexing
-├── caching/            # Redis, CDN, caching strategies
-├── messaging/          # Kafka, event sourcing, CQRS
-├── architecture/       # Microservices, serverless, API gateway
-├── resilience/         # Circuit breaker, rate limiting, transactions
-├── security/           # Auth, encryption, API security
-├── observability/      # Monitoring, logging
-├── api-design/         # REST, gRPC, GraphQL, real-time
-├── patterns/           # Fan-out, search, video streaming
-├── case-studies/       # 14 real-world system designs
-├── genai/              # Generative AI system design (58 files)
-│   ├── foundations/    # Transformers, LLMs, embeddings
-│   ├── llm-architecture/  # Serving, GPU, quantization
-│   ├── rag/            # RAG pipelines, chunking, retrieval
-│   ├── agents/         # Agent patterns, tool use, multi-agent
-│   ├── evaluation/     # Eval frameworks, hallucination detection
-│   ├── safety/         # Guardrails, PII, governance
-│   ├── performance/    # Latency, caching, cost optimization
-│   ├── case-studies/   # Chatbot, copilot, enterprise search
-│   └── ...             # + vector-search, prompt-engineering, orchestration, patterns
-└── meta/               # Concept index, source maps
+├── traditional-system-design/
+│   ├── 01-fundamentals/       # System design foundations
+│   ├── 02-scalability/        # Load balancing, sharding, autoscaling
+│   ├── 03-storage/            # SQL, NoSQL, object storage, indexing
+│   ├── 04-caching/            # Redis, CDN, caching strategies
+│   ├── 05-messaging/          # Kafka, event sourcing, CQRS
+│   ├── 06-architecture/       # Microservices, serverless, API gateway
+│   ├── 07-api-design/         # REST, gRPC, GraphQL, real-time
+│   ├── 08-resilience/         # Circuit breaker, rate limiting, transactions
+│   ├── 09-security/           # Auth, encryption, API security
+│   ├── 10-observability/      # Monitoring, logging
+│   ├── 11-patterns/           # Fan-out, search, video streaming
+│   ├── 12-case-studies/       # 14 real-world system designs
+│   └── meta/
+├── genai-system-design/
+│   ├── 01-foundations/        # Transformers, LLMs, embeddings
+│   ├── 02-llm-architecture/   # Serving, GPU, quantization
+│   ├── 03-model-strategies/   # Fine-tuning, model selection
+│   ├── 04-rag/                # RAG pipelines, chunking, retrieval
+│   ├── 05-vector-search/      # Vector databases, ANN algorithms
+│   ├── 06-prompt-engineering/  # Prompt design, structured output
+│   ├── 07-agents/             # Agent patterns, tool use, multi-agent
+│   ├── 08-orchestration/      # LangChain, LlamaIndex, DSPy
+│   ├── 09-evaluation/         # Eval frameworks, hallucination detection
+│   ├── 10-safety/             # Guardrails, PII, governance
+│   ├── 11-performance/        # Latency, caching, cost optimization
+│   ├── 12-patterns/           # Design patterns
+│   ├── 13-case-studies/       # Chatbot, copilot, enterprise search
+│   └── meta/
+├── glossary.md
+└── cheat-sheet.md
 ```

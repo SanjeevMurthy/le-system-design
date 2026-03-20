@@ -6,12 +6,12 @@ A quick-reference guide for system design interviews. Every section links to the
 
 ## Interview Framework (5 Steps)
 
-Follow this sequence in every design session. The phases are sequential -- each produces artifacts that feed the next. See [System Design Framework](./fundamentals/system-design-framework.md) for the full methodology.
+Follow this sequence in every design session. The phases are sequential -- each produces artifacts that feed the next. See [System Design Framework](./traditional-system-design/01-fundamentals/system-design-framework.md) for the full methodology.
 
 | Step | Time | What You Do | Output |
 |---|---|---|---|
 | **1. Requirements** | 5 min | Clarify functional requirements (the "verbs": create, read, search, notify). Quantify non-functional requirements (DAU, QPS, latency SLA, availability target). Declare the CAP trade-off. Agree on scope. | FR list, NFR numbers, in/out of scope |
-| **2. Core Entities and API** | 5 min | Identify entities ("nouns": User, Post, Order). Define the API contract (REST endpoints, request/response shapes). This is where the [data model](./fundamentals/data-modeling.md) begins. | Entity list, API sketch |
+| **2. Core Entities and API** | 5 min | Identify entities ("nouns": User, Post, Order). Define the API contract (REST endpoints, request/response shapes). This is where the [data model](./traditional-system-design/01-fundamentals/data-modeling.md) begins. | Entity list, API sketch |
 | **3. High-Level Design** | 15 min | Draw the end-to-end architecture: client, API gateway, services, databases, caches, queues. Prove the concept works -- it can have "warts." | Architecture diagram |
 | **4. Deep Dives** | 20 min | Proactively identify bottlenecks and address them: hot shards, fan-out problems, consistency challenges, failure modes. This is where you show senior-level depth. | Refined architecture with specific solutions |
 | **5. Wrap-Up** | 5 min | Summarize trade-offs, state what you would do next (monitoring, security, multi-region), and acknowledge limitations. | Concise summary |
@@ -19,26 +19,26 @@ Follow this sequence in every design session. The phases are sequential -- each 
 **Critical reminders:**
 - Do NOT start drawing boxes before requirements are clear.
 - State non-functional numbers early: "100M DAU, 1000 QPS write, 10K QPS read, P99 < 200ms, 99.99% availability."
-- Always do back-of-envelope math. See [Back-of-Envelope Estimation](./fundamentals/back-of-envelope-estimation.md).
+- Always do back-of-envelope math. See [Back-of-Envelope Estimation](./traditional-system-design/01-fundamentals/back-of-envelope-estimation.md).
 
 ---
 
 ## Data Store Selection Guide
 
-Choose based on the data shape, access pattern, and consistency requirement. See [Data Modeling](./fundamentals/data-modeling.md) for the full framework.
+Choose based on the data shape, access pattern, and consistency requirement. See [Data Modeling](./traditional-system-design/01-fundamentals/data-modeling.md) for the full framework.
 
 | Use Case | Recommended Store | Why | Canonical File |
 |---|---|---|---|
-| User profiles, orders, payments (ACID required) | **PostgreSQL / MySQL** | Rigid schema, transactions, referential integrity, flexible ad-hoc queries | [SQL Databases](./storage/sql-databases.md) |
-| High-velocity writes (telemetry, swipes, logs) | **Cassandra** | Append-only LSM storage, linear horizontal scaling, 100K+ writes/sec | [Cassandra](./storage/cassandra.md) |
-| Flexible-schema documents (product catalog, tweets) | **MongoDB / DynamoDB** | Schema-on-read, nested JSON, no join needed | [NoSQL Databases](./storage/nosql-databases.md) |
-| Session data, cache, rate limiting | **Redis** | Sub-millisecond in-memory reads, TTL support, atomic operations | [Redis](./caching/redis.md) |
-| Full-text search, log search | **Elasticsearch** | Inverted index, relevance scoring, aggregation | [Search and Indexing](./patterns/search-and-indexing.md) |
-| Social graph, recommendation edges | **Neo4j / Amazon Neptune** | Native graph traversal, O(1) edge lookups | [NoSQL Databases](./storage/nosql-databases.md) |
-| Images, videos, large files | **S3 / GCS / Azure Blob** | Flat namespace, 11 nines durability, cheap at scale | [Object Storage](./storage/object-storage.md) |
-| Time-series metrics (CPU, temperature, stock) | **InfluxDB / TimescaleDB** | LSM trees, compression (delta-of-deltas), downsampling | [Time-Series Databases](./storage/time-series-databases.md) |
-| Pre-computed feed, leaderboard | **Redis Sorted Sets** | O(log N) insert/rank, in-memory speed | [Redis](./caching/redis.md) |
-| Serverless API with known access patterns | **DynamoDB** | Single-digit ms latency, auto-scaling, GSIs for secondary patterns | [DynamoDB](./storage/dynamodb.md) |
+| User profiles, orders, payments (ACID required) | **PostgreSQL / MySQL** | Rigid schema, transactions, referential integrity, flexible ad-hoc queries | [SQL Databases](./traditional-system-design/03-storage/sql-databases.md) |
+| High-velocity writes (telemetry, swipes, logs) | **Cassandra** | Append-only LSM storage, linear horizontal scaling, 100K+ writes/sec | [Cassandra](./traditional-system-design/03-storage/cassandra.md) |
+| Flexible-schema documents (product catalog, tweets) | **MongoDB / DynamoDB** | Schema-on-read, nested JSON, no join needed | [NoSQL Databases](./traditional-system-design/03-storage/nosql-databases.md) |
+| Session data, cache, rate limiting | **Redis** | Sub-millisecond in-memory reads, TTL support, atomic operations | [Redis](./traditional-system-design/04-caching/redis.md) |
+| Full-text search, log search | **Elasticsearch** | Inverted index, relevance scoring, aggregation | [Search and Indexing](./traditional-system-design/11-patterns/search-and-indexing.md) |
+| Social graph, recommendation edges | **Neo4j / Amazon Neptune** | Native graph traversal, O(1) edge lookups | [NoSQL Databases](./traditional-system-design/03-storage/nosql-databases.md) |
+| Images, videos, large files | **S3 / GCS / Azure Blob** | Flat namespace, 11 nines durability, cheap at scale | [Object Storage](./traditional-system-design/03-storage/object-storage.md) |
+| Time-series metrics (CPU, temperature, stock) | **InfluxDB / TimescaleDB** | LSM trees, compression (delta-of-deltas), downsampling | [Time-Series Databases](./traditional-system-design/03-storage/time-series-databases.md) |
+| Pre-computed feed, leaderboard | **Redis Sorted Sets** | O(log N) insert/rank, in-memory speed | [Redis](./traditional-system-design/04-caching/redis.md) |
+| Serverless API with known access patterns | **DynamoDB** | Single-digit ms latency, auto-scaling, GSIs for secondary patterns | [DynamoDB](./traditional-system-design/03-storage/dynamodb.md) |
 
 **Polyglot persistence rule**: Most real systems use 3-5 different stores. SQL for transactions, Redis for cache, S3 for media, Elasticsearch for search, Cassandra or DynamoDB for high-volume writes.
 
@@ -46,7 +46,7 @@ Choose based on the data shape, access pattern, and consistency requirement. See
 
 ## Protocol Selection Guide
 
-Choose the communication protocol based on the interaction pattern. See [REST API](./api-design/rest-api.md), [gRPC](./api-design/grpc.md), [GraphQL](./api-design/graphql.md), and [Real-Time Protocols](./api-design/real-time-protocols.md).
+Choose the communication protocol based on the interaction pattern. See [REST API](./traditional-system-design/07-api-design/rest-api.md), [gRPC](./traditional-system-design/07-api-design/grpc.md), [GraphQL](./traditional-system-design/07-api-design/graphql.md), and [Real-Time Protocols](./traditional-system-design/07-api-design/real-time-protocols.md).
 
 | Use Case | Protocol | Why |
 |---|---|---|
@@ -63,22 +63,22 @@ Choose the communication protocol based on the interaction pattern. See [REST AP
 
 ## Scaling Decision Tree
 
-Use this to navigate scaling decisions systematically. See [Scaling Overview](./fundamentals/scaling-overview.md), [Sharding](./scalability/sharding.md), and [Autoscaling](./scalability/autoscaling.md).
+Use this to navigate scaling decisions systematically. See [Scaling Overview](./traditional-system-design/01-fundamentals/scaling-overview.md), [Sharding](./traditional-system-design/02-scalability/sharding.md), and [Autoscaling](./traditional-system-design/02-scalability/autoscaling.md).
 
 | If You See This... | Then Do This... | Why |
 |---|---|---|
 | Single server CPU > 80% sustained | Scale vertically (bigger instance) | Cheapest fix, zero architectural changes |
 | Vertical limit reached (~96 cores, 768 GB RAM) | Scale horizontally (add nodes + load balancer) | Physical ceiling of single machine |
-| Read throughput is the bottleneck | Add read replicas | Replicas serve reads, leader handles writes. See [Database Replication](./storage/database-replication.md) |
-| Write throughput is the bottleneck | Shard the database | Distribute writes across partitions. See [Sharding](./scalability/sharding.md) |
-| Same data read repeatedly | Add a caching layer (Redis) | Cache hit avoids DB round-trip. See [Caching](./caching/caching.md) |
-| Global users, high latency | Deploy CDN for static assets | Serve from edge locations. See [CDN](./caching/cdn.md) |
-| Traffic is bursty/unpredictable | Use autoscaling (HPA or serverless) | Scale to demand, scale to zero. See [Serverless](./architecture/serverless.md) |
-| Single point of failure | Add redundancy (replicas, multi-AZ) | See [Availability and Reliability](./fundamentals/availability-reliability.md) |
-| Downstream service overwhelmed | Add rate limiting + circuit breaker | Protect dependencies. See [Rate Limiting](./resilience/rate-limiting.md), [Circuit Breaker](./resilience/circuit-breaker.md) |
-| Database table > 1 TB or > 50K writes/sec | Shard with consistent hashing | See [Consistent Hashing](./scalability/consistent-hashing.md) |
-| Synchronous service chain too slow | Decouple with message queues | Async processing, independent scaling. See [Message Queues](./messaging/message-queues.md) |
-| Need exactly-once processing across services | Use saga pattern or 2PC | See [Distributed Transactions](./resilience/distributed-transactions.md) |
+| Read throughput is the bottleneck | Add read replicas | Replicas serve reads, leader handles writes. See [Database Replication](./traditional-system-design/03-storage/database-replication.md) |
+| Write throughput is the bottleneck | Shard the database | Distribute writes across partitions. See [Sharding](./traditional-system-design/02-scalability/sharding.md) |
+| Same data read repeatedly | Add a caching layer (Redis) | Cache hit avoids DB round-trip. See [Caching](./traditional-system-design/04-caching/caching.md) |
+| Global users, high latency | Deploy CDN for static assets | Serve from edge locations. See [CDN](./traditional-system-design/04-caching/cdn.md) |
+| Traffic is bursty/unpredictable | Use autoscaling (HPA or serverless) | Scale to demand, scale to zero. See [Serverless](./traditional-system-design/06-architecture/serverless.md) |
+| Single point of failure | Add redundancy (replicas, multi-AZ) | See [Availability and Reliability](./traditional-system-design/01-fundamentals/availability-reliability.md) |
+| Downstream service overwhelmed | Add rate limiting + circuit breaker | Protect dependencies. See [Rate Limiting](./traditional-system-design/08-resilience/rate-limiting.md), [Circuit Breaker](./traditional-system-design/08-resilience/circuit-breaker.md) |
+| Database table > 1 TB or > 50K writes/sec | Shard with consistent hashing | See [Consistent Hashing](./traditional-system-design/02-scalability/consistent-hashing.md) |
+| Synchronous service chain too slow | Decouple with message queues | Async processing, independent scaling. See [Message Queues](./traditional-system-design/05-messaging/message-queues.md) |
+| Need exactly-once processing across services | Use saga pattern or 2PC | See [Distributed Transactions](./traditional-system-design/08-resilience/distributed-transactions.md) |
 
 ---
 
@@ -122,7 +122,7 @@ Use this to navigate scaling decisions systematically. See [Scaling Overview](./
 | Peak QPS | Average QPS * 2-5x | 1,000 * 3 = 3,000 QPS peak |
 | Bandwidth | QPS * response size | 3,000 QPS * 10 KB = 30 MB/s |
 
-See [Back-of-Envelope Estimation](./fundamentals/back-of-envelope-estimation.md) for detailed methodology.
+See [Back-of-Envelope Estimation](./traditional-system-design/01-fundamentals/back-of-envelope-estimation.md) for detailed methodology.
 
 ### Availability Targets
 
@@ -133,7 +133,7 @@ See [Back-of-Envelope Estimation](./fundamentals/back-of-envelope-estimation.md)
 | 99.99% (four nines) | | 52.6 minutes | Production APIs |
 | 99.999% (five nines) | | 5.26 minutes | Mission-critical infra |
 
-See [Availability and Reliability](./fundamentals/availability-reliability.md).
+See [Availability and Reliability](./traditional-system-design/01-fundamentals/availability-reliability.md).
 
 ---
 
@@ -141,72 +141,72 @@ See [Availability and Reliability](./fundamentals/availability-reliability.md).
 
 | Problem | Component | Implementation Example | Canonical File |
 |---|---|---|---|
-| Route HTTP traffic to services | **API Gateway** | AWS API Gateway, Kong, Nginx | [API Gateway](./architecture/api-gateway.md) |
-| Distribute traffic across servers | **Load Balancer** | ALB (L7), NLB (L4), Nginx, HAProxy | [Load Balancing](./scalability/load-balancing.md) |
-| Reduce read latency | **Cache** | Redis (external), local in-process cache | [Caching](./caching/caching.md) |
-| Serve static assets globally | **CDN** | CloudFront, Cloudflare, Akamai | [CDN](./caching/cdn.md) |
-| Rate limit API requests | **Token Bucket in Redis** | Redis INCR + TTL, API Gateway throttling | [Rate Limiting](./resilience/rate-limiting.md) |
-| Decouple services | **Message Queue** | SQS (simple), Kafka (streaming), RabbitMQ | [Message Queues](./messaging/message-queues.md) |
-| Full-text search | **Inverted Index** | Elasticsearch, Solr | [Search and Indexing](./patterns/search-and-indexing.md) |
-| Unique ID generation | **Snowflake / ULID** | Twitter Snowflake, UUID v7 | [Distributed Transactions](./resilience/distributed-transactions.md) |
-| Distributed locking | **Redis Lock with TTL** | Redlock algorithm, DynamoDB conditional writes | [Redis](./caching/redis.md) |
-| Workflow orchestration | **State Machine** | AWS Step Functions, Temporal | [Serverless](./architecture/serverless.md) |
-| Change Data Capture | **CDC / Streams** | DynamoDB Streams, Debezium + Kafka | [Event-Driven Architecture](./messaging/event-driven-architecture.md) |
-| Real-time leaderboard | **Sorted Set** | Redis ZADD/ZRANK | [Redis](./caching/redis.md) |
-| Geospatial queries | **Geohash / Quad-tree** | Redis GEO, PostGIS R-tree | [Geospatial Indexing](./patterns/geospatial-indexing.md) |
-| Count unique visitors | **HyperLogLog** | Redis PFADD/PFCOUNT (1.5 KB for millions) | [Probabilistic Data Structures](./patterns/probabilistic-data-structures.md) |
-| Check set membership | **Bloom Filter** | Redis BF.ADD (avoid recrawling URLs) | [Probabilistic Data Structures](./patterns/probabilistic-data-structures.md) |
-| Prevent cascading failures | **Circuit Breaker** | Hystrix pattern, resilience4j | [Circuit Breaker](./resilience/circuit-breaker.md) |
-| Multi-step distributed transactions | **Saga Pattern** | Step Functions, event-driven compensating actions | [Distributed Transactions](./resilience/distributed-transactions.md) |
-| Feature rollout control | **Feature Flags** | LaunchDarkly, custom Redis-backed flags | [Feature Flags](./resilience/feature-flags.md) |
-| Separate read/write optimization | **CQRS** | SQL for writes, denormalized NoSQL for reads | [CQRS](./messaging/cqrs.md) |
+| Route HTTP traffic to services | **API Gateway** | AWS API Gateway, Kong, Nginx | [API Gateway](./traditional-system-design/06-architecture/api-gateway.md) |
+| Distribute traffic across servers | **Load Balancer** | ALB (L7), NLB (L4), Nginx, HAProxy | [Load Balancing](./traditional-system-design/02-scalability/load-balancing.md) |
+| Reduce read latency | **Cache** | Redis (external), local in-process cache | [Caching](./traditional-system-design/04-caching/caching.md) |
+| Serve static assets globally | **CDN** | CloudFront, Cloudflare, Akamai | [CDN](./traditional-system-design/04-caching/cdn.md) |
+| Rate limit API requests | **Token Bucket in Redis** | Redis INCR + TTL, API Gateway throttling | [Rate Limiting](./traditional-system-design/08-resilience/rate-limiting.md) |
+| Decouple services | **Message Queue** | SQS (simple), Kafka (streaming), RabbitMQ | [Message Queues](./traditional-system-design/05-messaging/message-queues.md) |
+| Full-text search | **Inverted Index** | Elasticsearch, Solr | [Search and Indexing](./traditional-system-design/11-patterns/search-and-indexing.md) |
+| Unique ID generation | **Snowflake / ULID** | Twitter Snowflake, UUID v7 | [Distributed Transactions](./traditional-system-design/08-resilience/distributed-transactions.md) |
+| Distributed locking | **Redis Lock with TTL** | Redlock algorithm, DynamoDB conditional writes | [Redis](./traditional-system-design/04-caching/redis.md) |
+| Workflow orchestration | **State Machine** | AWS Step Functions, Temporal | [Serverless](./traditional-system-design/06-architecture/serverless.md) |
+| Change Data Capture | **CDC / Streams** | DynamoDB Streams, Debezium + Kafka | [Event-Driven Architecture](./traditional-system-design/05-messaging/event-driven-architecture.md) |
+| Real-time leaderboard | **Sorted Set** | Redis ZADD/ZRANK | [Redis](./traditional-system-design/04-caching/redis.md) |
+| Geospatial queries | **Geohash / Quad-tree** | Redis GEO, PostGIS R-tree | [Geospatial Indexing](./traditional-system-design/11-patterns/geospatial-indexing.md) |
+| Count unique visitors | **HyperLogLog** | Redis PFADD/PFCOUNT (1.5 KB for millions) | [Probabilistic Data Structures](./traditional-system-design/11-patterns/probabilistic-data-structures.md) |
+| Check set membership | **Bloom Filter** | Redis BF.ADD (avoid recrawling URLs) | [Probabilistic Data Structures](./traditional-system-design/11-patterns/probabilistic-data-structures.md) |
+| Prevent cascading failures | **Circuit Breaker** | Hystrix pattern, resilience4j | [Circuit Breaker](./traditional-system-design/08-resilience/circuit-breaker.md) |
+| Multi-step distributed transactions | **Saga Pattern** | Step Functions, event-driven compensating actions | [Distributed Transactions](./traditional-system-design/08-resilience/distributed-transactions.md) |
+| Feature rollout control | **Feature Flags** | LaunchDarkly, custom Redis-backed flags | [Feature Flags](./traditional-system-design/08-resilience/feature-flags.md) |
+| Separate read/write optimization | **CQRS** | SQL for writes, denormalized NoSQL for reads | [CQRS](./traditional-system-design/05-messaging/cqrs.md) |
 
 ---
 
 ## Common Patterns by Problem Type
 
 ### High Read Volume
-- **Cache hot data** in Redis (cache-aside pattern) --> [Caching](./caching/caching.md)
-- **CDN for static assets** (images, CSS, JS) --> [CDN](./caching/cdn.md)
-- **Read replicas** for database reads --> [Database Replication](./storage/database-replication.md)
-- **Denormalize** into pre-computed views --> [Data Modeling](./fundamentals/data-modeling.md)
-- **Fan-out on write** to pre-compute feeds --> [Fan-Out](./patterns/fan-out.md)
+- **Cache hot data** in Redis (cache-aside pattern) --> [Caching](./traditional-system-design/04-caching/caching.md)
+- **CDN for static assets** (images, CSS, JS) --> [CDN](./traditional-system-design/04-caching/cdn.md)
+- **Read replicas** for database reads --> [Database Replication](./traditional-system-design/03-storage/database-replication.md)
+- **Denormalize** into pre-computed views --> [Data Modeling](./traditional-system-design/01-fundamentals/data-modeling.md)
+- **Fan-out on write** to pre-compute feeds --> [Fan-Out](./traditional-system-design/11-patterns/fan-out.md)
 
 ### High Write Volume
-- **Append-only storage** (Cassandra, Kafka) --> [Cassandra](./storage/cassandra.md)
-- **Batch/aggregate writes** before persisting --> [Message Queues](./messaging/message-queues.md)
-- **Shard the database** by partition key --> [Sharding](./scalability/sharding.md)
-- **Write-behind cache** for async persistence --> [Caching](./caching/caching.md)
-- **Event sourcing** (immutable event log) --> [Event Sourcing](./messaging/event-sourcing.md)
+- **Append-only storage** (Cassandra, Kafka) --> [Cassandra](./traditional-system-design/03-storage/cassandra.md)
+- **Batch/aggregate writes** before persisting --> [Message Queues](./traditional-system-design/05-messaging/message-queues.md)
+- **Shard the database** by partition key --> [Sharding](./traditional-system-design/02-scalability/sharding.md)
+- **Write-behind cache** for async persistence --> [Caching](./traditional-system-design/04-caching/caching.md)
+- **Event sourcing** (immutable event log) --> [Event Sourcing](./traditional-system-design/05-messaging/event-sourcing.md)
 
 ### Low Latency Required
-- **In-memory cache** (Redis: 0.1-0.5ms) --> [Redis](./caching/redis.md)
-- **CDN edge caching** (reduce network hops) --> [CDN](./caching/cdn.md)
-- **gRPC** instead of REST (binary, streaming) --> [gRPC](./api-design/grpc.md)
-- **Database indexing** (B-tree, composite index) --> [Database Indexing](./storage/database-indexing.md)
+- **In-memory cache** (Redis: 0.1-0.5ms) --> [Redis](./traditional-system-design/04-caching/redis.md)
+- **CDN edge caching** (reduce network hops) --> [CDN](./traditional-system-design/04-caching/cdn.md)
+- **gRPC** instead of REST (binary, streaming) --> [gRPC](./traditional-system-design/07-api-design/grpc.md)
+- **Database indexing** (B-tree, composite index) --> [Database Indexing](./traditional-system-design/03-storage/database-indexing.md)
 - **Connection pooling** (avoid TCP handshake per request)
-- **Pre-compute** results at write time (CQRS) --> [CQRS](./messaging/cqrs.md)
+- **Pre-compute** results at write time (CQRS) --> [CQRS](./traditional-system-design/05-messaging/cqrs.md)
 
 ### Strong Consistency Required
-- **SQL with ACID** (PostgreSQL, MySQL) --> [SQL Databases](./storage/sql-databases.md)
-- **Distributed locks** (Redis Redlock, Zookeeper) --> [Redis](./caching/redis.md)
-- **Two-phase commit** (for cross-service atomicity) --> [Distributed Transactions](./resilience/distributed-transactions.md)
-- **Quorum reads/writes** (Cassandra with QUORUM consistency) --> [Cassandra](./storage/cassandra.md)
-- **Conditional writes** (DynamoDB optimistic locking) --> [DynamoDB](./storage/dynamodb.md)
+- **SQL with ACID** (PostgreSQL, MySQL) --> [SQL Databases](./traditional-system-design/03-storage/sql-databases.md)
+- **Distributed locks** (Redis Redlock, Zookeeper) --> [Redis](./traditional-system-design/04-caching/redis.md)
+- **Two-phase commit** (for cross-service atomicity) --> [Distributed Transactions](./traditional-system-design/08-resilience/distributed-transactions.md)
+- **Quorum reads/writes** (Cassandra with QUORUM consistency) --> [Cassandra](./traditional-system-design/03-storage/cassandra.md)
+- **Conditional writes** (DynamoDB optimistic locking) --> [DynamoDB](./traditional-system-design/03-storage/dynamodb.md)
 
 ### High Availability Required
 - **Multi-AZ deployment** with automatic failover
-- **Load balancer** health checks --> [Load Balancing](./scalability/load-balancing.md)
-- **Circuit breaker** to isolate failures --> [Circuit Breaker](./resilience/circuit-breaker.md)
-- **Retry with exponential backoff + jitter** --> [Rate Limiting](./resilience/rate-limiting.md)
-- **Eventual consistency** (favor AP in CAP) --> [CAP Theorem](./fundamentals/cap-theorem.md)
-- **Async processing** with dead-letter queues --> [Message Queues](./messaging/message-queues.md)
+- **Load balancer** health checks --> [Load Balancing](./traditional-system-design/02-scalability/load-balancing.md)
+- **Circuit breaker** to isolate failures --> [Circuit Breaker](./traditional-system-design/08-resilience/circuit-breaker.md)
+- **Retry with exponential backoff + jitter** --> [Rate Limiting](./traditional-system-design/08-resilience/rate-limiting.md)
+- **Eventual consistency** (favor AP in CAP) --> [CAP Theorem](./traditional-system-design/01-fundamentals/cap-theorem.md)
+- **Async processing** with dead-letter queues --> [Message Queues](./traditional-system-design/05-messaging/message-queues.md)
 
 ### Real-Time Communication
-- **WebSocket** for bidirectional (chat, gaming) --> [Real-Time Protocols](./api-design/real-time-protocols.md)
-- **SSE** for server-to-client broadcast (live comments, notifications) --> [Real-Time Protocols](./api-design/real-time-protocols.md)
-- **Redis Pub/Sub** for cross-server message routing --> [Redis](./caching/redis.md)
-- **Kafka** for durable event streaming --> [Message Queues](./messaging/message-queues.md)
+- **WebSocket** for bidirectional (chat, gaming) --> [Real-Time Protocols](./traditional-system-design/07-api-design/real-time-protocols.md)
+- **SSE** for server-to-client broadcast (live comments, notifications) --> [Real-Time Protocols](./traditional-system-design/07-api-design/real-time-protocols.md)
+- **Redis Pub/Sub** for cross-server message routing --> [Redis](./traditional-system-design/04-caching/redis.md)
+- **Kafka** for durable event streaming --> [Message Queues](./traditional-system-design/05-messaging/message-queues.md)
 
 ---
 
@@ -214,17 +214,17 @@ See [Availability and Reliability](./fundamentals/availability-reliability.md).
 
 | System | Key Challenge | Core Pattern | Canonical File |
 |---|---|---|---|
-| **Twitter** | Massive read-to-write ratio, celebrity fan-out | Hybrid fan-out (write for normal users, read for celebrities), Redis timelines | [Twitter](./case-studies/twitter.md) |
-| **News Feed (Facebook)** | Pre-compute vs. on-demand feed generation | Fan-out on write + hybrid merge for mega-accounts | [News Feed](./case-studies/news-feed.md) |
-| **WhatsApp** | Ordered delivery, at-least-once, offline users | WebSocket + Redis Pub/Sub + inbox pattern (ACK-based deletion) | [WhatsApp](./case-studies/whatsapp.md) |
-| **TicketMaster** | Strong consistency, surge traffic, no double-booking | Two-phase booking (reserve + confirm), Redis distributed lock with TTL, virtual waiting room | [TicketMaster](./case-studies/ticketmaster.md) |
-| **Tinder** | High write volume (swipes), geospatial matching | Cassandra for swipes (100K+ writes/sec), geohashing for proximity | [Tinder](./case-studies/tinder.md) |
-| **Facebook Live Comments** | Sub-200ms broadcast to millions of concurrent viewers | SSE + partitioned Redis Pub/Sub (hash of video ID mod N) | [Facebook Live Comments](./case-studies/facebook-live-comments.md) |
-| **Dropbox** | Large file sync, resumability, deduplication | Chunking + fingerprinting, pre-signed URLs, delta sync | [Dropbox](./case-studies/dropbox.md) |
-| **Web Crawler** | Billions of URLs, politeness, deduplication | BFS with SQS + Bloom filter + exponential backoff | [Web Crawler](./case-studies/web-crawler.md) |
-| **Ad Click Aggregator** | High volume event aggregation, exactly-once counting | Kafka + MapReduce aggregation, idempotent writes | [Ad Click Aggregator](./case-studies/ad-click-aggregator.md) |
-| **UPI Payments** | Strong consistency, idempotency, high throughput | Saga pattern, idempotency keys, event sourcing | [UPI Payments](./case-studies/upi-payments.md) |
-| **Netflix** | Global video delivery, personalization at scale | CDN + microservices + Cassandra + recommendation engine | [Netflix](./case-studies/netflix.md) |
+| **Twitter** | Massive read-to-write ratio, celebrity fan-out | Hybrid fan-out (write for normal users, read for celebrities), Redis timelines | [Twitter](./traditional-system-design/12-case-studies/twitter.md) |
+| **News Feed (Facebook)** | Pre-compute vs. on-demand feed generation | Fan-out on write + hybrid merge for mega-accounts | [News Feed](./traditional-system-design/12-case-studies/news-feed.md) |
+| **WhatsApp** | Ordered delivery, at-least-once, offline users | WebSocket + Redis Pub/Sub + inbox pattern (ACK-based deletion) | [WhatsApp](./traditional-system-design/12-case-studies/whatsapp.md) |
+| **TicketMaster** | Strong consistency, surge traffic, no double-booking | Two-phase booking (reserve + confirm), Redis distributed lock with TTL, virtual waiting room | [TicketMaster](./traditional-system-design/12-case-studies/ticketmaster.md) |
+| **Tinder** | High write volume (swipes), geospatial matching | Cassandra for swipes (100K+ writes/sec), geohashing for proximity | [Tinder](./traditional-system-design/12-case-studies/tinder.md) |
+| **Facebook Live Comments** | Sub-200ms broadcast to millions of concurrent viewers | SSE + partitioned Redis Pub/Sub (hash of video ID mod N) | [Facebook Live Comments](./traditional-system-design/12-case-studies/facebook-live-comments.md) |
+| **Dropbox** | Large file sync, resumability, deduplication | Chunking + fingerprinting, pre-signed URLs, delta sync | [Dropbox](./traditional-system-design/12-case-studies/dropbox.md) |
+| **Web Crawler** | Billions of URLs, politeness, deduplication | BFS with SQS + Bloom filter + exponential backoff | [Web Crawler](./traditional-system-design/12-case-studies/web-crawler.md) |
+| **Ad Click Aggregator** | High volume event aggregation, exactly-once counting | Kafka + MapReduce aggregation, idempotent writes | [Ad Click Aggregator](./traditional-system-design/12-case-studies/ad-click-aggregator.md) |
+| **UPI Payments** | Strong consistency, idempotency, high throughput | Saga pattern, idempotency keys, event sourcing | [UPI Payments](./traditional-system-design/12-case-studies/upi-payments.md) |
+| **Netflix** | Global video delivery, personalization at scale | CDN + microservices + Cassandra + recommendation engine | [Netflix](./traditional-system-design/12-case-studies/netflix.md) |
 
 ---
 
@@ -235,14 +235,14 @@ These patterns signal a weak design in interviews. Avoid them.
 | Red Flag | Why It Is Wrong | What To Do Instead |
 |---|---|---|
 | **No requirements phase** | Jumping to architecture without understanding the problem | Spend 5 minutes on FRs, NFRs, scope, and CAP trade-off |
-| **"Just use Kafka/Redis/DynamoDB"** without justification | Buzzword-dropping without articulating why | State the access pattern, then derive the storage choice. See [Data Modeling](./fundamentals/data-modeling.md) |
+| **"Just use Kafka/Redis/DynamoDB"** without justification | Buzzword-dropping without articulating why | State the access pattern, then derive the storage choice. See [Data Modeling](./traditional-system-design/01-fundamentals/data-modeling.md) |
 | **Single database for everything** | No polyglot persistence; using SQL for cache and NoSQL for transactions | Match each data shape to its optimal store |
-| **No numbers** | No QPS, no storage estimate, no latency target | Do back-of-envelope math. "100M DAU / 100K seconds = 1K QPS." See [Back-of-Envelope Estimation](./fundamentals/back-of-envelope-estimation.md) |
-| **Synchronous chain of microservices** | Latency compounds, any failure cascades | Use message queues or Step Functions for decoupling. See [Message Queues](./messaging/message-queues.md) |
+| **No numbers** | No QPS, no storage estimate, no latency target | Do back-of-envelope math. "100M DAU / 100K seconds = 1K QPS." See [Back-of-Envelope Estimation](./traditional-system-design/01-fundamentals/back-of-envelope-estimation.md) |
+| **Synchronous chain of microservices** | Latency compounds, any failure cascades | Use message queues or Step Functions for decoupling. See [Message Queues](./traditional-system-design/05-messaging/message-queues.md) |
 | **No failure handling** | Happy-path-only design that ignores network partitions, timeouts, and crashes | Add retries, DLQs, circuit breakers, and idempotency |
-| **Sharding from day one** | Over-engineering for a startup that has 1,000 users | Scale vertically first, then read replicas, then shard. See [Scaling Overview](./fundamentals/scaling-overview.md) |
-| **Storing images/videos in the database** | Blobs destroy DB performance and replication | Use S3 for media, store URLs in the database. See [Object Storage](./storage/object-storage.md) |
-| **No caching layer** | Every read hits the database | Add Redis cache-aside for hot data. See [Caching](./caching/caching.md) |
-| **"It is eventually consistent" without explaining impact** | Hand-waving consistency without understanding consequences | State what happens when data is stale and how you mitigate it. See [CAP Theorem](./fundamentals/cap-theorem.md) |
-| **Ignoring the "celebrity" / hot key problem** | One viral user overwhelms a shard or cache node | Use random suffix sharding, N-cache strategy, or fan-out on read. See [Fan-Out](./patterns/fan-out.md) |
-| **No monitoring or observability** | Building a system you cannot debug in production | Add metrics (P99 latency, error rate), structured logs, distributed tracing. See [Monitoring](./observability/monitoring.md) |
+| **Sharding from day one** | Over-engineering for a startup that has 1,000 users | Scale vertically first, then read replicas, then shard. See [Scaling Overview](./traditional-system-design/01-fundamentals/scaling-overview.md) |
+| **Storing images/videos in the database** | Blobs destroy DB performance and replication | Use S3 for media, store URLs in the database. See [Object Storage](./traditional-system-design/03-storage/object-storage.md) |
+| **No caching layer** | Every read hits the database | Add Redis cache-aside for hot data. See [Caching](./traditional-system-design/04-caching/caching.md) |
+| **"It is eventually consistent" without explaining impact** | Hand-waving consistency without understanding consequences | State what happens when data is stale and how you mitigate it. See [CAP Theorem](./traditional-system-design/01-fundamentals/cap-theorem.md) |
+| **Ignoring the "celebrity" / hot key problem** | One viral user overwhelms a shard or cache node | Use random suffix sharding, N-cache strategy, or fan-out on read. See [Fan-Out](./traditional-system-design/11-patterns/fan-out.md) |
+| **No monitoring or observability** | Building a system you cannot debug in production | Add metrics (P99 latency, error rate), structured logs, distributed tracing. See [Monitoring](./traditional-system-design/10-observability/monitoring.md) |

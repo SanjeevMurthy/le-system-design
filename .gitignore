@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+
+# Source folder
+
+
+# Prompt files
+x-prompts.txt
+initialize.md
