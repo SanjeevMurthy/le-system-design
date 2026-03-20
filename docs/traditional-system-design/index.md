@@ -31,19 +31,19 @@ The infrastructure primitives that every system is built from.
 4. [Sharding](02-scalability/04-sharding.md) — strategies, shard keys, celebrity problem
 
 **Data Storage:**
-5. [SQL Databases](03-storage/01-sql-databases.md) — relational model, ACID, Postgres
-6. [NoSQL Databases](03-storage/02-nosql-databases.md) — document, KV, wide-column, graph
-7. [Object Storage](03-storage/03-object-storage.md) — S3, pre-signed URLs, multipart
-8. [Database Indexing](03-storage/04-database-indexing.md) — B-trees, LSM trees, hash indexes
-9. [Database Replication](03-storage/05-database-replication.md) — leader/follower, quorum, WAL, CDC
-10. [Time-Series Databases](03-storage/06-time-series-databases.md) — compression, downsampling
-11. [Cassandra](03-storage/07-cassandra.md) — tunable consistency, write path
-12. [DynamoDB](03-storage/08-dynamodb.md) — partition keys, GSI/LSI, DAX
+1. [SQL Databases](03-storage/01-sql-databases.md) — relational model, ACID, Postgres
+2. [NoSQL Databases](03-storage/02-nosql-databases.md) — document, KV, wide-column, graph
+3. [Object Storage](03-storage/03-object-storage.md) — S3, pre-signed URLs, multipart
+4. [Database Indexing](03-storage/04-database-indexing.md) — B-trees, LSM trees, hash indexes
+5. [Database Replication](03-storage/05-database-replication.md) — leader/follower, quorum, WAL, CDC
+6. [Time-Series Databases](03-storage/06-time-series-databases.md) — compression, downsampling
+7. [Cassandra](03-storage/07-cassandra.md) — tunable consistency, write path
+8. [DynamoDB](03-storage/08-dynamodb.md) — partition keys, GSI/LSI, DAX
 
 **Caching:**
-13. [Caching Strategies](04-caching/01-caching.md) — cache-aside, write-through, pitfalls
-14. [Redis](04-caching/02-redis.md) — data structures, rate limiters, pub/sub
-15. [CDN](04-caching/03-cdn.md) — edge caching, invalidation
+1. [Caching Strategies](04-caching/01-caching.md) — cache-aside, write-through, pitfalls
+2. [Redis](04-caching/02-redis.md) — data structures, rate limiters, pub/sub
+3. [CDN](04-caching/03-cdn.md) — edge caching, invalidation
 
 ### Stage 3: Communication & Architecture
 
@@ -56,15 +56,15 @@ How services talk to each other and how systems are organized.
 4. [CQRS](05-messaging/04-cqrs.md) — read/write separation, materialized views
 
 **Architecture:**
-5. [API Gateway](06-architecture/01-api-gateway.md) — routing, auth, complexity budget
-6. [Microservices](06-architecture/02-microservices.md) — decomposition, service discovery
-7. [Serverless](06-architecture/03-serverless.md) — Lambda, vendor lock-in, FaaS
+1. [API Gateway](06-architecture/01-api-gateway.md) — routing, auth, complexity budget
+2. [Microservices](06-architecture/02-microservices.md) — decomposition, service discovery
+3. [Serverless](06-architecture/03-serverless.md) — Lambda, vendor lock-in, FaaS
 
 **API Design:**
-8. [REST API](07-api-design/01-rest-api.md) — resource naming, idempotency, status codes
-9. [gRPC](07-api-design/02-grpc.md) — Protocol Buffers, binary serialization
-10. [GraphQL](07-api-design/03-graphql.md) — queries, N+1 problem, data loaders
-11. [Real-Time Protocols](07-api-design/04-real-time-protocols.md) — WebSockets, SSE, WebRTC
+1. [REST API](07-api-design/01-rest-api.md) — resource naming, idempotency, status codes
+2. [gRPC](07-api-design/02-grpc.md) — Protocol Buffers, binary serialization
+3. [GraphQL](07-api-design/03-graphql.md) — queries, N+1 problem, data loaders
+4. [Real-Time Protocols](07-api-design/04-real-time-protocols.md) — WebSockets, SSE, WebRTC
 
 ### Stage 4: Reliability & Operations
 
@@ -77,13 +77,13 @@ Making systems survive the real world.
 4. [Feature Flags](08-resilience/04-feature-flags.md) — progressive releases, kill switches
 
 **Security:**
-5. [Authentication & Authorization](09-security/01-authentication-authorization.md) — OAuth, JWT, RBAC
-6. [Encryption](09-security/02-encryption.md) — at rest, in transit, TLS
-7. [API Security](09-security/03-api-security.md) — input validation, DDoS protection
+1. [Authentication & Authorization](09-security/01-authentication-authorization.md) — OAuth, JWT, RBAC
+2. [Encryption](09-security/02-encryption.md) — at rest, in transit, TLS
+3. [API Security](09-security/03-api-security.md) — input validation, DDoS protection
 
 **Observability:**
-8. [Monitoring](10-observability/01-monitoring.md) — Prometheus, Grafana, golden signals, P99
-9. [Logging](10-observability/02-logging.md) — ELK stack, distributed tracing
+1. [Monitoring](10-observability/01-monitoring.md) — Prometheus, Grafana, golden signals, P99
+2. [Logging](10-observability/02-logging.md) — ELK stack, distributed tracing
 
 ### Stage 5: Advanced Patterns
 

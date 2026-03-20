@@ -97,16 +97,16 @@ Making GenAI systems reliable, safe, observable, and cost-effective.
 4. [LLM Observability](09-evaluation/04-llm-observability.md) — token-level tracing, cost attribution, quality monitoring, prompt versioning
 
 **Safety & Governance:**
-5. [Guardrails](10-safety/01-guardrails.md) — input/output validation, content filtering, NeMo Guardrails, deterministic enforcement
-6. [PII Protection](10-safety/02-pii-protection.md) — detection, masking, anonymization across the GenAI pipeline
-7. [Red Teaming](10-safety/03-red-teaming.md) — adversarial testing, attack taxonomies, automated red teaming, jailbreak defense
-8. [AI Governance](10-safety/04-ai-governance.md) — model cards, audit trails, bias testing, regulatory compliance (EU AI Act, NIST)
+1. [Guardrails](10-safety/01-guardrails.md) — input/output validation, content filtering, NeMo Guardrails, deterministic enforcement
+2. [PII Protection](10-safety/02-pii-protection.md) — detection, masking, anonymization across the GenAI pipeline
+3. [Red Teaming](10-safety/03-red-teaming.md) — adversarial testing, attack taxonomies, automated red teaming, jailbreak defense
+4. [AI Governance](10-safety/04-ai-governance.md) — model cards, audit trails, bias testing, regulatory compliance (EU AI Act, NIST)
 
 **Performance & Cost:**
-9. [Latency Optimization](11-performance/01-latency-optimization.md) — prefill/decode pipeline, speculative decoding, streaming, batching strategies
-10. [Semantic Caching](11-performance/02-semantic-caching.md) — vector-based cache lookup, similarity thresholds, cache invalidation
-11. [Cost Optimization](11-performance/03-cost-optimization.md) — token economics, prompt compression, tiered models, TCO analysis
-12. [Model Routing](11-performance/04-model-routing.md) — dynamic model selection, cascading, cost-quality routing, fallback chains
+1. [Latency Optimization](11-performance/01-latency-optimization.md) — prefill/decode pipeline, speculative decoding, streaming, batching strategies
+2. [Semantic Caching](11-performance/02-semantic-caching.md) — vector-based cache lookup, similarity thresholds, cache invalidation
+3. [Cost Optimization](11-performance/03-cost-optimization.md) — token economics, prompt compression, tiered models, TCO analysis
+4. [Model Routing](11-performance/04-model-routing.md) — dynamic model selection, cascading, cost-quality routing, fallback chains
 
 ### Stage 10: Case Studies & Patterns
 
