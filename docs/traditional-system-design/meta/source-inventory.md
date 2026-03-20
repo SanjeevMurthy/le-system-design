@@ -315,7 +315,7 @@ Designs a real-time "Nearby Friends" feature similar to Facebook's, showing frie
 - Redis Pub/Sub for location broadcasting
 - Geohashing for proximity calculation
 
-#### ch04-google-maps.md
+#### ch04-14-google-maps.md
 Designs a simplified version of Google Maps covering map rendering, routing, and real-time navigation.
 
 - Map tile serving and rendering
@@ -363,7 +363,7 @@ Designs a large-scale email service (Gmail/Outlook scale) supporting billions of
 - Distributed storage for email data
 - Search functionality and attachment handling
 
-#### ch10-s3-like-object-storage.md
+#### ch10-s3-like-03-object-storage.md
 Designs an object storage system similar to Amazon S3 with RESTful API, versioning, and high durability.
 
 - Object storage architecture (data store vs. metadata store)
@@ -453,7 +453,7 @@ Discusses database scaling strategies including replication, partitioning, norma
 - Normalization vs. denormalization
 - Partitioning and sharding
 
-#### ch07-distributed-transactions.md
+#### ch07-03-distributed-transactions.md
 Covers maintaining data consistency across multiple services using distributed transaction patterns.
 
 - Two-phase commit (2PC)
@@ -546,7 +546,7 @@ Designs a reservation system like Airbnb with features for guests and operations
 - Booking flow with concurrency control
 - Payment integration and availability management
 
-#### ch19-design-a-news-feed.md
+#### ch19-design-a-02-news-feed.md
 Designs a personalized, scalable news feed system serving images and text with filtering capabilities.
 
 - Personalized content ranking
@@ -675,7 +675,7 @@ Designs a proximity service for location-based features like nearby restaurant s
 - Read and write path design
 - Location-based marketing and dynamic pricing use cases
 
-#### ch15-designing-a-service-like-twitter.md
+#### ch15-designing-a-service-like-01-twitter.md
 Designs a Twitter-like microblogging service covering feed generation, data modeling, and scale calculations.
 
 - User registration, authentication, tweet creation
@@ -683,7 +683,7 @@ Designs a Twitter-like microblogging service covering feed generation, data mode
 - Data model design and scale calculations
 - Load balancers, API gateways, caches, databases
 
-#### ch16-designing-a-service-like-instagram.md
+#### ch16-designing-a-service-like-11-instagram.md
 Designs an Instagram-like photo-sharing platform covering media storage, feeds, and user engagement features.
 
 - Photo upload and storage architecture
@@ -699,7 +699,7 @@ Designs a collaborative document editing service like Google Docs with real-time
 - Document storage and versioning
 - User presence and cursor tracking
 
-#### ch18-designing-a-service-like-netflix.md
+#### ch18-designing-a-service-like-12-netflix.md
 Designs a video streaming service like Netflix covering content delivery, encoding, and personalization.
 
 - Video encoding and transcoding pipeline
