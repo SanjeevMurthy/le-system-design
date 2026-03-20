@@ -3,7 +3,9 @@
 
 # Source folder
 
-
 # Prompt files
-x-prompts.txt
+*prompt*.txt
 initialize.md
+
+# Claude Code working files
+.superpowers/
