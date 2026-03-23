@@ -1,6 +1,6 @@
 # System Design Knowledge Base
 
-A comprehensive, concept-driven knowledge base covering both **traditional system design** and **Generative AI system design** — built for architects, senior engineers, and interview preparation.
+A comprehensive, concept-driven knowledge base covering **traditional system design**, **Generative AI system design**, and **Kubernetes system design** — built for architects, senior engineers, and interview preparation.
 
 ---
 
@@ -47,6 +47,30 @@ Covers the full GenAI system lifecycle: LLM foundations, inference infrastructur
 | **Performance** | Latency optimization, semantic caching, cost optimization, model routing |
 | **Case Studies** | Chatbot, copilot, enterprise search, voice AI, GenAI gateway, K8s for GenAI |
 
+### Kubernetes System Design (`docs/kubernetes-system-design/`)
+
+**64 canonical topic files | 9 case studies | 5 design patterns**
+
+Covers the full Kubernetes lifecycle: cluster architecture, workload design, networking, storage, scaling, security, deployment strategies, observability, platform engineering, and production operations.
+
+**[→ Browse Kubernetes System Design](docs/kubernetes-system-design/index.md)**
+
+| Category | Topics |
+|----------|--------|
+| **Foundations** | Kubernetes architecture, control plane, API server & etcd, container runtimes, networking model |
+| **Cluster Design** | Cluster topology, node pools, multi-cluster, cloud vs bare-metal |
+| **Workload Design** | Pod patterns, deployments, StatefulSets, jobs, GPU workloads |
+| **Networking** | Services, Gateway API, service mesh, DNS, network policies |
+| **Storage** | PV/PVC, CSI drivers, stateful data patterns, model delivery |
+| **Scaling** | HPA, VPA, Karpenter, KEDA, GPU autoscaling |
+| **Security** | RBAC, pod security, supply chain, secrets, runtime security |
+| **Deployment** | GitOps, Helm, CI/CD pipelines, progressive delivery |
+| **Observability** | Monitoring, logging, cost management, SLOs |
+| **Platform** | Internal developer platforms, multi-tenancy, self-service, DX |
+| **Operations** | Upgrades, disaster recovery, troubleshooting, cost optimization |
+| **Patterns** | Operator, sidecar, CRD, anti-patterns, migration strategies |
+| **Case Studies** | Spotify, Airbnb, Pinterest, multi-tenant, migration, stateful, GPU, edge, enterprise |
+
 ---
 
 ## Learning Path
@@ -57,12 +81,16 @@ Start with [Foundations](docs/traditional-system-design/01-fundamentals/system-d
 ### For GenAI System Design
 Start with [Foundations](docs/genai-system-design/01-foundations/transformers.md) → LLM Architecture → RAG → Agents → Production Readiness → Case Studies
 
+### For Kubernetes System Design
+Start with [Foundations](docs/kubernetes-system-design/01-foundations/01-kubernetes-architecture.md) → Cluster Design → Workload Design → Networking → Security → Operations → Case Studies
+
 ---
 
 ## Quick Reference
 
 - [Traditional System Design Index](docs/traditional-system-design/index.md)
 - [GenAI System Design Index](docs/genai-system-design/index.md)
+- [Kubernetes System Design Index](docs/kubernetes-system-design/index.md)
 - [Glossary (246 terms)](docs/glossary.md)
 - [Cheat Sheet](docs/cheat-sheet.md)
 
@@ -100,6 +128,21 @@ docs/
 │   ├── 11-performance/        # Latency, caching, cost optimization
 │   ├── 12-patterns/           # Design patterns
 │   ├── 13-case-studies/       # Chatbot, copilot, enterprise search
+│   └── meta/
+├── kubernetes-system-design/
+│   ├── 01-foundations/        # Architecture, control plane, etcd, runtimes
+│   ├── 02-cluster-design/     # Topology, node pools, multi-cluster
+│   ├── 03-workload-design/    # Pods, deployments, StatefulSets, jobs
+│   ├── 04-networking-design/  # Services, Gateway API, service mesh
+│   ├── 05-storage-design/     # PV/PVC, CSI, stateful data patterns
+│   ├── 06-scaling-design/     # HPA, VPA, Karpenter, KEDA
+│   ├── 07-security-design/    # RBAC, policies, supply chain, secrets
+│   ├── 08-deployment-design/  # GitOps, Helm, CI/CD, progressive delivery
+│   ├── 09-observability-design/ # Monitoring, logging, cost, SLOs
+│   ├── 10-platform-design/    # IDP, multi-tenancy, self-service
+│   ├── 11-operations/         # Upgrades, DR, troubleshooting
+│   ├── 12-patterns/           # Operator, sidecar, CRD patterns
+│   ├── 13-case-studies/       # Spotify, Airbnb, Pinterest, and more
 │   └── meta/
 ├── glossary.md
 └── cheat-sheet.md
